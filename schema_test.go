@@ -216,7 +216,7 @@ func TestDefaultValueOughtToEncodeUsingFieldSchemaOK(t *testing.T) {
 			  }
 			}
 		  ],
-		  "default": "null"
+		  "default": null
 		}
 	  ]
 	}`)
