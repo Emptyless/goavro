@@ -109,7 +109,11 @@ func makeRecordCodec(st map[string]*Codec, enclosingNamespace string, schemaMap 
 				// NOTE: To support record field default values, union schema
 				// set to the type name of first member
 				// TODO: change to schemaCanonical below
-				b, err := fieldCodec.binaryFromNative(nil, Union(fieldCodec.schemaOriginal, defaultValue))
+				if !fieldCodec.unambiguous {
+					defaultValue = Union(fieldCodec.schemaOriginal, defaultValue)
+				}
+
+				b, err := fieldCodec.binaryFromNative(nil, defaultValue)
 				if err != nil {
 					return nil, fmt.Errorf("Record %q field %q: default value ought to encode using field schema: %s", c.typeName, fieldName, err)
 				}

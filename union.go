@@ -363,6 +363,7 @@ func buildCodecForTypeDescribedBySliceUnambiguousJSON(st map[string]*Codec, encl
 		// type name of first member
 		// TODO: add/change to schemaCanonical below
 		schemaOriginal: cr.codecFromIndex[0].typeName.fullName,
+		unambiguous:    true,
 
 		typeName:          &name{"union", nullNamespace},
 		nativeFromBinary:  unionNativeFromBinary(&cr),
