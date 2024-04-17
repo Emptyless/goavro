@@ -109,7 +109,8 @@ func makeRecordCodec(st map[string]*Codec, enclosingNamespace string, schemaMap 
 				// NOTE: To support record field default values, union schema
 				// set to the type name of first member
 				// TODO: change to schemaCanonical below
-				if !fieldCodec.unambiguous {
+				unionSchemas := fieldSchemaMap["type"].([]interface{})
+				if !fieldCodec.unambiguous || len(unionSchemas) != 2 || !(unionSchemas[0] == "null" || unionSchemas[1] == "null") {
 					defaultValue = Union(fieldCodec.schemaOriginal, defaultValue)
 				}
 
