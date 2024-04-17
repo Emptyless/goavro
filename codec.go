@@ -51,7 +51,6 @@ type Codec struct {
 	schemaOriginal  string
 	schemaCanonical string
 	typeName        *name
-	unambiguous     bool
 
 	nativeFromTextual func([]byte) (interface{}, []byte, error)
 	binaryFromNative  func([]byte, interface{}) ([]byte, error)

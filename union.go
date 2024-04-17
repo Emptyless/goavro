@@ -152,13 +152,6 @@ func unionBinaryFromNative(cr *codecInfo) func(buf []byte, datum interface{}) ([
 			}
 			return longBinaryFromNative(buf, index)
 		case map[string]interface{}:
-			if cr.unambiguousMode && cr.isNullable() && cr.numConcreteTypes() == 1 {
-				c := cr.firstConcreteTypeCodec()
-				index := cr.indexFromName[c.typeName.fullName]
-				buf, _ = longBinaryFromNative(buf, index)
-				return c.binaryFromNative(buf, datum)
-			}
-
 			if len(v) != 1 {
 				return nil, fmt.Errorf("cannot encode binary union: non-nil Union values ought to be specified with Go map[string]interface{}, with single key equal to type name, and value equal to datum value: %v; received: %T", cr.allowedTypes, datum)
 			}
@@ -172,13 +165,6 @@ func unionBinaryFromNative(cr *codecInfo) func(buf []byte, datum interface{}) ([
 				buf, _ = longBinaryFromNative(buf, index)
 				return c.binaryFromNative(buf, value)
 			}
-		}
-
-		if cr.unambiguousMode && cr.isNullable() && cr.numConcreteTypes() == 1 {
-			c := cr.firstConcreteTypeCodec()
-			index := cr.indexFromName[c.typeName.fullName]
-			buf, _ = longBinaryFromNative(buf, index)
-			return c.binaryFromNative(buf, datum)
 		}
 
 		return nil, fmt.Errorf("cannot encode binary union: non-nil Union values ought to be specified with Go map[string]interface{}, with single key equal to type name, and value equal to datum value: %v; received: %T", cr.allowedTypes, datum)
@@ -363,7 +349,6 @@ func buildCodecForTypeDescribedBySliceUnambiguousJSON(st map[string]*Codec, encl
 		// type name of first member
 		// TODO: add/change to schemaCanonical below
 		schemaOriginal: cr.codecFromIndex[0].typeName.fullName,
-		unambiguous:    true,
 
 		typeName:          &name{"union", nullNamespace},
 		nativeFromBinary:  unionNativeFromBinary(&cr),
