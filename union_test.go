@@ -346,7 +346,7 @@ func ExampleCodec_NativeFromTextual_unambiguous_record() {
 	}
 	// pull out the string to show its all good
 	fmt.Println(o)
-	// Output: map[name:John Doe]
+	// Output: map[Person:map[name:John Doe]]
 }
 
 // Use the unambiguous JSON codec instead for nullable types

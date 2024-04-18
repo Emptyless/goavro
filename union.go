@@ -399,10 +399,6 @@ func checkAll(allowedTypes []string, cr *codecInfo, buf []byte) (interface{}, []
 			continue
 		}
 
-		// in unambiguous mode, don't return the type if only a single concrete type is registered
-		if cr.unambiguousMode && cr.numConcreteTypes() == 1 {
-			return rv, rb, nil
-		}
 		return map[string]interface{}{name: rv}, rb, nil
 	}
 	return nil, buf, fmt.Errorf("could not decode any json data in input %v", string(buf))
