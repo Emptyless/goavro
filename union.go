@@ -504,11 +504,13 @@ func nativeAvroFromTextualJSON(cr *codecInfo) func(buf []byte) (interface{}, []b
 			sort.Strings(cr.allowedTypes)
 		case interface{}:
 			// if running in unambiguous mode, allow a nullable (NULL, T) type to be checked
-			if cr.unambiguousMode && cr.numConcreteTypes() == 2 {
+			if cr.unambiguousMode && cr.numConcreteTypes() == 1 {
 				// get T
 				var index int
+				var name string
 				for _key, _index := range cr.indexFromName {
 					if _key != "null" {
+						name = _key
 						index = _index
 						break
 					}
@@ -519,7 +521,7 @@ func nativeAvroFromTextualJSON(cr *codecInfo) func(buf []byte) (interface{}, []b
 				if err != nil {
 					return nil, buf, fmt.Errorf("could not decode json data in input: %v: %v", string(buf), err)
 				}
-				return rv, buf[dec.InputOffset():], nil
+				return map[string]interface{}{name: rv}, buf[dec.InputOffset():], nil
 			}
 		}
 

@@ -297,13 +297,13 @@ func ExampleCodec_NativeFromTextual_unambiguous_primitive() {
 		fmt.Println(err)
 	}
 	// see it parse directly into string
-	o, ok := t.(string)
+	o, ok := t.(map[string]interface{})
 	if !ok {
 		fmt.Printf("its a %T not a string", t)
 	}
 	// pull out the string to show its all good
 	fmt.Println(o)
-	// Output: some string
+	// Output: map[string:some string]
 }
 
 // Use the unambiguous JSON codec instead for nullable types
